@@ -4,12 +4,13 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
+import java.util.concurrent.Callable;
 
 @Command(name = "gendiff",
         mixinStandardHelpOptions = true,
         version = "1.0",
         description = "Compares two configuration files and shows a difference.")
-public class App implements Runnable {
+public class App implements Callable<Integer> {
 
     @Option(names = { "-f", "--format" }, paramLabel = "format",
             description = "output format [default: stylish]")
@@ -22,11 +23,17 @@ public class App implements Runnable {
     private String filePath2;
 
     @Override
-    public void run() {
-        // Здесь позже будет логика сравнения файлов
-        System.out.println("File 1: " + filePath1);
-        System.out.println("File 2: " + filePath2);
-        System.out.println("Format: " + format);
+    public Integer call() throws Exception {
+        try {
+            // Вызываем метод generate и выводим результат
+            String result = Differ.generate(filePath1, filePath2);
+            System.out.println(result);
+            return 0;
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+            return 1;
+        }
     }
 
     public static void main(String[] args) {

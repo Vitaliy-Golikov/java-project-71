@@ -1,26 +1,38 @@
-plugins {
-    id("java")
-    id("application")
-    id("com.github.ben-manes.versions") version "0.51.0"
-}
+name: Java CI with SonarQube
 
-group = "hexlet.code"
-version = "1.0-SNAPSHOT"
+        on:
+push:
+branches: [ main ]
+pull_request:
+branches: [ main ]
 
-repositories {
-    mavenCentral()
-}
+jobs:
+build:
+runs-on: ubuntu-latest
 
-dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    implementation("info.picocli:picocli:4.7.6")
-}
+steps:
+- uses: actions/checkout@v3
+with:
+fetch-depth: 0  # Важно для SonarQube
 
-tasks.test {
-    useJUnitPlatform()
-}
+- name: Set up JDK 21
+uses: actions/setup-java@v3
+with:
+java-version: '21'
+distribution: 'temurin'
 
-application {
-    mainClass = "hexlet.code.App"
-}
+- name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+- name: Cache SonarQube packages
+uses: actions/cache@v3
+with:
+path: ~/.sonar/cache
+key: ${{ runner.os }}-sonar
+restore-keys: ${{ runner.os }}-sonar
+
+- name: Build and analyze
+env:
+GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+run: cd app && ./gradlew build jacocoTestReport sonarqube
