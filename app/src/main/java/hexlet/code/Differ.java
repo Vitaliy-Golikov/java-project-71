@@ -13,10 +13,8 @@ public class Differ {
         String content1 = Files.readString(Paths.get(filepath1));
         String content2 = Files.readString(Paths.get(filepath2));
 
-        // Парсим JSON в Map
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> data1 = mapper.readValue(content1, Map.class);
-        Map<String, Object> data2 = mapper.readValue(content2, Map.class);
+        Map<String, Object> data1 = Parse.parse(content1, filepath1);
+        Map<String, Object> data2 = Parse.parse(content2, filepath2);
 
         StringBuilder result = new StringBuilder("{\n");
 
