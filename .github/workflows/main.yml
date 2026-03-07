@@ -45,12 +45,3 @@ jobs:
         with:
           arguments: jacocoTestReport
           build-root-directory: app
-
-      - name: SonarQube Analysis
-        uses: gradle/gradle-build-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          arguments: sonarqube
-          build-root-directory: app

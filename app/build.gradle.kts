@@ -24,8 +24,8 @@ application {
 
 sonar {
     properties {
-        property "sonar.projectKey", "Vitaliy-Golikov_java-project-71"
-        property "sonar.organization", "vitaliy-golikov"
+        property("sonar.projectKey", "Vitaliy-Golikov_java-project-71")
+        property("sonar.organization", "vitaliy-golikov")
     }
 }
 
