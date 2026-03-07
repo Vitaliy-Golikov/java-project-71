@@ -1,38 +1,69 @@
-name: Java CI with SonarQube
+plugins {
+    application
+    id "org.sonarqube" version "7.2.3.7755"
+    checkstyle
+    jacoco
+    id("com.github.ben-manes.versions") version "0.51.0"
+}
 
-        on:
-push:
-branches: [ main ]
-pull_request:
-branches: [ main ]
+repositories {
+    mavenCentral()
+}
 
-jobs:
-build:
-runs-on: ubuntu-latest
+dependencies {
+    implementation("info.picocli:picocli:4.7.6")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
 
-steps:
-- uses: actions/checkout@v3
-with:
-fetch-depth: 0  # Важно для SonarQube
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+}
 
-- name: Set up JDK 21
-uses: actions/setup-java@v3
-with:
-java-version: '21'
-distribution: 'temurin'
+application {
+    mainClass.set("hexlet.code.App")
+}
 
-- name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+sonar {
+    properties {
+        property "sonar.projectKey", "Vitaliy-Golikov_java-project-71"
+        property "sonar.organization", "vitaliy-golikov"
+    }
+}
 
-- name: Cache SonarQube packages
-uses: actions/cache@v3
-with:
-path: ~/.sonar/cache
-key: ${{ runner.os }}-sonar
-restore-keys: ${{ runner.os }}-sonar
+tasks.register("run-dist") {
+    dependsOn("installDist")
+    doLast {
+        println("Application installed to: build/install/app/")
+        println("Run: .\\build\\install\\app\\bin\\app.bat")
+    }
+}
 
-- name: Build and analyze
-env:
-GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-run: cd app && ./gradlew build jacocoTestReport sonarqube
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(true)
+    }
+}
+
+checkstyle {
+    toolVersion = "10.12.1"
+    config = resources.text.fromFile(File(projectDir.parentFile, "config/checkstyle/checkstyle.xml"))
+}
+
+tasks.withType<Checkstyle>().configureEach {
+    reports {
+        xml.required.set(false)
+        html.required.set(true)
+    }
+}
