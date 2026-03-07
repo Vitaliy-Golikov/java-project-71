@@ -22,20 +22,25 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Make gradlew executable
         run: chmod +x app/gradlew
 
-      - name: Cache SonarQube packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+      - name: Build with Gradle
+        run: cd app && ./gradlew build
 
-      - name: Build and analyze
+      - name: Run tests
+        run: cd app && ./gradlew test
+
+      - name: Run linter
+        run: cd app && ./gradlew checkstyleMain checkstyleTest
+
+      - name: Run JaCoCo test report
+        run: cd app && ./gradlew jacocoTestReport
+
+      - name: SonarQube Analysis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: cd app && ./gradlew build jacocoTestReport sonarqube
+        run: cd app && ./gradlew sonarqube
