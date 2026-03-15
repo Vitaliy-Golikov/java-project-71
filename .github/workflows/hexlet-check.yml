@@ -17,4 +17,3 @@ jobs:
         uses: hexlet/project-action@release
         with:
           hexlet-id: ${{ secrets.HEXLET_ID }}
-          make: setup  # ЭТА СТРОКА ЗАСТАВИТ ВЫПОЛНИТЬ make setup
