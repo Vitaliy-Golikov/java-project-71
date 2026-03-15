@@ -2,8 +2,8 @@
 
 setup:
 	chmod +x app/gradlew
-	cd app && ./gradlew clean install
-	cd app && ./gradlew clean compileTest
+	cd app && .\gradlew clean install
+	cd app && .\gradlew clean compileTest
 
 run:
 	cd app && ./gradlew run --args='src/test/resources/fixtures/testFile1.json src/test/resources/fixtures/testFile2.json'
