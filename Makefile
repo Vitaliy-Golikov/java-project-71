@@ -1,6 +1,6 @@
 .PHONY: install run test lint build
 
-install:
+setup:
 	chmod +x app/gradlew
 	cd app && ./gradlew clean install
 	cd app && ./gradlew clean compileTest
