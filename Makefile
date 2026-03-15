@@ -6,7 +6,7 @@ install:
 	cd app && ./gradlew clean compileTest
 
 run:
-	cd app && ./gradlew run --args='../fixtures/file1.json ../fixtures/file2.json'
+	cd app && ./gradlew run --args='src/test/resources/fixtures/testFile1.json src/test/resources/fixtures/testFile2.json'
 
 test:
 	cd app && ./gradlew test
