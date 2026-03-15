@@ -1,9 +1,8 @@
-.PHONY: setup run test lint build
-
+.PHONY: setup
 setup:
 	chmod +x app/gradlew
 	cd app && ./gradlew clean install
-	cd app && ./gradlew clean compileTest
+	cd app && ./gradlew clean compileTest   # ВАЖНО: используем ./gradlew, а не gradle!
 
 run:
 	cd app && ./gradlew run --args='../fixtures/file1.json ../fixtures/file2.json'
