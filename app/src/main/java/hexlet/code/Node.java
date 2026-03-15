@@ -1,5 +1,10 @@
 package hexlet.code;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public class Node {
     private String key;
     private String status;
@@ -13,15 +18,4 @@ public class Node {
         this.newValue = value;
     }
 
-    public Node(String key, String status, Object oldValue, Object newValue) {
-        this.key = key;
-        this.status = status;
-        this.oldValue = oldValue;
-        this.newValue = newValue;
-    }
-
-    public String getKey() { return key; }
-    public String getStatus() { return status; }
-    public Object getOldValue() { return oldValue; }
-    public Object getNewValue() { return newValue; }
 }

@@ -1,12 +1,14 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
 public class Differ {
+
     public static String generate(String filepath1, String filepath2) throws Exception {
-        return generate(filepath1, filepath2, "stylish");
+        return generate(filepath1, filepath2, "stylish");  // вызывает метод с форматом
     }
 
     public static String generate(String filepath1, String filepath2, String format) throws Exception {
@@ -16,7 +18,6 @@ public class Differ {
         Map<String, Object> data1 = Parse.parse(content1, filepath1);
         Map<String, Object> data2 = Parse.parse(content2, filepath2);
 
-        // Строим дерево различий
         List<Node> differences = TreeBuilder.build(data1, data2);
 
         if ("stylish".equals(format)) {

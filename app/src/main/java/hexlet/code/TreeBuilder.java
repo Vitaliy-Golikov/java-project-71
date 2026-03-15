@@ -22,6 +22,7 @@ public class TreeBuilder {
                 Object value1 = data1.get(key);
                 Object value2 = data2.get(key);
 
+                // Исправление: безопасное сравнение с учетом null
                 if (value1 == null && value2 == null) {
                     nodes.add(new Node(key, "unchanged", null));
                 } else if (value1 == null) {
