@@ -16,6 +16,7 @@ public class Differ {
         Map<String, Object> data1 = Parse.parse(content1, filepath1);
         Map<String, Object> data2 = Parse.parse(content2, filepath2);
 
+        // Строим дерево различий
         List<Node> differences = TreeBuilder.build(data1, data2);
 
         if ("stylish".equals(format)) {
