@@ -54,7 +54,7 @@ tasks.jacocoTestReport {
 
 checkstyle {
     toolVersion = "10.12.1"
-    config = resources.text.fromFile(File(projectDir.parentFile, "config/checkstyle/checkstyle.xml"))
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
 }
 
 tasks.withType<Checkstyle>().configureEach {
