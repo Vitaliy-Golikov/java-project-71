@@ -5,6 +5,7 @@ plugins {
     application
     checkstyle
     jacoco
+    id("org.sonarqube") version "7.2.3.7755"
 }
 
 repositories {
@@ -61,5 +62,12 @@ tasks.withType<Checkstyle>().configureEach {
     reports {
         xml.required.set(false)
         html.required.set(true)
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "Vitaliy-Golikov_java-project-71")
+        property("sonar.organization", "vitaliy-golikov")
     }
 }
