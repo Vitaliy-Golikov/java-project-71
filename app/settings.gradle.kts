@@ -1,1 +1,2 @@
-rootProject.name = "app"
+group = "hexlet.code"
+version = "1.0-SNAPSHOT"
