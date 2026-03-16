@@ -1,22 +1,22 @@
 .PHONY: setup build run-dist test report check clean
 
 setup:
-	.\gradlew.bat clean install
+	cd app && ./gradlew clean install
 
 build:
-	.\gradlew.bat clean build
+	cd app && ./gradlew clean build
 
 run-dist:
-	.\gradlew.bat run
+	cd app && ./gradlew run
 
 test:
-	.\gradlew.bat test
+	cd app && ./gradlew test
 
 report:
-	.\gradlew.bat jacocoTestReport
+	cd app && ./gradlew jacocoTestReport
 
 check:
-	.\gradlew.bat check
+	cd app && ./gradlew check
 
 clean:
-	.\gradlew.bat clean
+	cd app && ./gradlew clean
