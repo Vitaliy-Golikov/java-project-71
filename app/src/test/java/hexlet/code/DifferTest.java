@@ -78,4 +78,123 @@ public class DifferTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void testGeneratePlain() throws Exception {
+        String expected =
+                "Property 'follow' was removed\n" +
+                        "Property 'proxy' was removed\n" +
+                        "Property 'timeout' was updated. From 50 to 20\n" +
+                        "Property 'verbose' was added with value: true";
+
+        String actual = Differ.generate(
+                "src/test/resources/fixtures/testFile1.json",
+                "src/test/resources/fixtures/testFile2.json",
+                "plain"
+        );
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGenerateAttachPlain() throws Exception {
+        String expected =
+                "Property 'chars2' was updated. From [complex value] to false\n" +
+                        "Property 'checked' was updated. From false to true\n" +
+                        "Property 'default' was updated. From null to [complex value]\n" +
+                        "Property 'id' was updated. From 45 to null\n" +
+                        "Property 'key1' was removed\n" +
+                        "Property 'key2' was added with value: 'value2'\n" +
+                        "Property 'numbers2' was updated. From [complex value] to [complex value]\n" +
+                        "Property 'numbers3' was removed\n" +
+                        "Property 'numbers4' was added with value: [complex value]\n" +
+                        "Property 'obj1' was added with value: [complex value]\n" +
+                        "Property 'setting1' was updated. From 'Some value' to 'Another value'\n" +
+                        "Property 'setting2' was updated. From 200 to 300\n" +
+                        "Property 'setting3' was updated. From true to 'none'";
+
+        String actual = Differ.generate(
+                "src/test/resources/fixtures/testFileAttach1.json",
+                "src/test/resources/fixtures/testFileAttach2.json",
+                "plain"
+        );
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGenerateJsonFormat() throws Exception {
+        String actual = Differ.generate(
+                "src/test/resources/fixtures/testFile1.json",
+                "src/test/resources/fixtures/testFile2.json",
+                "json"
+        );
+
+        // Проверяем что результат не пустой и содержит ключи
+        assert actual != null && !actual.isEmpty();
+        assert actual.contains("follow");
+        assert actual.contains("timeout");
+        assert actual.contains("verbose");
+    }
+
+    @Test
+    public void testGenerateAttachJsonFormat() throws Exception {
+        String actual = Differ.generate(
+                "src/test/resources/fixtures/testFileAttach1.json",
+                "src/test/resources/fixtures/testFileAttach2.json",
+                "json"
+        );
+
+        // Проверяем что результат не пустой
+        assert actual != null && !actual.isEmpty();
+        // Проверяем наличие ключей
+        assert actual.contains("setting1");
+        assert actual.contains("chars2");
+        assert actual.contains("obj1");
+    }
+
+    @Test
+    public void testGenerateYamlPlain() throws Exception {
+        String expected =
+                "Property 'follow' was removed\n" +
+                        "Property 'proxy' was removed\n" +
+                        "Property 'timeout' was updated. From 50 to 20\n" +
+                        "Property 'verbose' was added with value: true";
+
+        String actual = Differ.generate(
+                "src/test/resources/fixtures/testFile1.yml",
+                "src/test/resources/fixtures/testFile2.yml",
+                "plain"
+        );
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testGenerateYamlJson() throws Exception {
+        String actual = Differ.generate(
+                "src/test/resources/fixtures/testFile1.yml",
+                "src/test/resources/fixtures/testFile2.yml",
+                "json"
+        );
+
+        assert actual != null && !actual.isEmpty();
+        assert actual.contains("follow");
+        assert actual.contains("timeout");
+    }
+
+    @Test
+    public void testUnsupportedFormat() {
+        try {
+            Differ.generate(
+                    "src/test/resources/fixtures/testFile1.json",
+                    "src/test/resources/fixtures/testFile2.json",
+                    "unsupported"
+            );
+            // Если дошли сюда - тест должен упасть
+            assert false;
+        } catch (Exception e) {
+            assertEquals("Unsupported format: unsupported", e.getMessage());
+        }
+    }
 }

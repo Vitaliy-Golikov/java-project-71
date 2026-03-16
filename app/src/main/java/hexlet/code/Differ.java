@@ -1,13 +1,15 @@
 package hexlet.code;
 
+import hexlet.code.formatters.Formatter;
+import hexlet.code.formatters.FormatterFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class Differ {
-
     public static String generate(String filepath1, String filepath2) throws Exception {
-        return generate(filepath1, filepath2, "stylish");  // вызывает метод с форматом
+        return generate(filepath1, filepath2, "stylish");
     }
 
     public static String generate(String filepath1, String filepath2, String format) throws Exception {
@@ -19,11 +21,7 @@ public class Differ {
 
         List<Node> differences = TreeBuilder.build(data1, data2);
 
-        if ("stylish".equals(format)) {
-            StylishFormatter formatter = new StylishFormatter();
-            return formatter.format(differences);
-        } else {
-            throw new Exception("Unsupported format: " + format);
-        }
+        Formatter formatter = FormatterFactory.getFormatter(format);
+        return formatter.format(differences);
     }
 }

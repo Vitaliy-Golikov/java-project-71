@@ -1,36 +1,48 @@
-name: SonarQube
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
-jobs:
-  build:
-    name: Build and analyze
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-      - name: Build and analyze
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build sonar --info
+  package hexlet.code.formatters;
+    
+    import hexlet.code.Node;
+    import java.util.List;
+    import java.util.stream.Collectors;
+    
+    public class PlainFormatter implements Formatter {
+    @Override
+    public String format(List<Node> nodes) {
+    return nodes.stream()
+    .map(this::formatNode)
+    .filter(line -> !line.isEmpty())
+    .collect(Collectors.joining("\n"));
+    }
+
+    private String formatNode(Node node) {
+    String key = node.getKey();
+    String status = node.getStatus();
+    
+    switch (status) {
+  case "added":
+    return String.format("Property '%s' was added with value: %s",
+      key, stringify(node.getNewValue()));
+  case "deleted":
+    return String.format("Property '%s' was removed", key);
+  case "changed":
+    return String.format("Property '%s' was updated. From %s to %s",
+    key, stringify(node.getOldValue()), stringify(node.getNewValue()));
+  case "unchanged":
+    return "";
+  default:
+    throw new IllegalArgumentException("Unknown status: " + status);
+        }
+    }
+
+    private String stringify(Object value) {
+        if (value == null) {
+            return "null";
+  }
+    if (value instanceof String) {
+    return "'" + value + "'";
+  }
+    if (value instanceof List || value instanceof Map) {
+    return "[complex value]";
+  }
+    return String.valueOf(value);
+  }
+  }
