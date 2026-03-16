@@ -1,22 +1,22 @@
 .PHONY: install run test lint build
 
 setup:
-	cd app && ./gradlew clean install
+	cd code/app && ./gradlew clean install
 
 build:
-	cd app && ./gradlew clean build
+	cd code/app && ./gradlew clean build
 
 run-dist:
-	cd app && ./gradlew run
+	cd code/app && ./gradlew run
 
 test:
-	cd app && ./gradlew test
+	cd code/app && ./gradlew test
 
 report:
-	cd app && ./gradlew jacocoTestReport
+	cd code/app && ./gradlew jacocoTestReport
 
 check:
-	cd app && ./gradlew check
+	cd code/app && ./gradlew check
 
 clean:
-	cd app && ./gradlew clean
+	cd code/app && ./gradlew clean
