@@ -1,18 +1,22 @@
 .PHONY: install run test lint build
 
 setup:
-	chmod +x app/gradlew
-	cd app && .\gradlew clean install
-	cd app && .\gradlew clean compileTest
+	cd app && ./gradlew clean install
 
-run:
-	cd app && ./gradlew run --args='src/test/resources/fixtures/testFile1.json src/test/resources/fixtures/testFile2.json'
+build:
+	cd app && ./gradlew clean build
+
+run-dist:
+	cd app && ./gradlew run
 
 test:
 	cd app && ./gradlew test
 
-lint:
-	cd app && ./gradlew checkstyleMain checkstyleTest
+report:
+	cd app && ./gradlew jacocoTestReport
 
-build:
-	cd app && ./gradlew clean build
+check:
+	cd app && ./gradlew check
+
+clean:
+	cd app && ./gradlew clean
