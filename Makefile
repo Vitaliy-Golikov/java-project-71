@@ -1,4 +1,4 @@
-.PHONY: install run test lint build clean setup run-dist
+.PHONY: setup build run-dist test report check clean
 
 setup:
 	cd code/app && ./gradlew clean install
@@ -6,7 +6,7 @@ setup:
 build:
 	cd code/app && ./gradlew clean build
 
-run-dist:  # Это цель для запуска скомпилированного приложения
+run-dist:
 	cd code/app && ./gradlew run
 
 test:
@@ -20,6 +20,3 @@ check:
 
 clean:
 	cd code/app && ./gradlew clean
-
-# Если вам нужна цель 'run' как алиас для 'run-dist'
-run: run-dist
