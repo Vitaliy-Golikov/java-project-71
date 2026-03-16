@@ -1,14 +1,19 @@
-.PHONY: build run-dist installDist clean
-
-run:
-	./gradlew run
+.PHONY: build run test report check clean
 
 build:
-	./gradlew build
+	cd app && ./gradlew clean build
 
-installDist:
-	./gradlew installDist
+run:
+	cd app && ./gradlew run
 
+test:
+	cd app && ./gradlew test
+
+report:
+	cd app && ./gradlew jacocoTestReport
+
+check:
+	cd app && ./gradlew check
 
 clean:
-	./gradlew clean
+	cd app && ./gradlew clean
