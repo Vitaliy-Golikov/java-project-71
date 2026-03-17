@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-public class JsonFormatter implements Formatter {
+public final class JsonFormatter implements Formatter {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override

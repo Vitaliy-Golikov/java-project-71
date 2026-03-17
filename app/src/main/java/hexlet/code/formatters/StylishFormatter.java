@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class StylishFormatter implements Formatter {
+public final class StylishFormatter implements Formatter {
     @Override
     public String format(List<Node> nodes) {
         StringBuilder result = new StringBuilder("{\n");
@@ -32,6 +32,8 @@ public class StylishFormatter implements Formatter {
                     result.append("  + ").append(key).append(": ")
                             .append(stringify(node.getNewValue())).append("\n");
                     break;
+                default:
+                    throw new IllegalArgumentException("Unknown status");
             }
         }
 

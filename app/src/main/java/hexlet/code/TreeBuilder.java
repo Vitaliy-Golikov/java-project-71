@@ -1,6 +1,10 @@
 package hexlet.code;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class TreeBuilder {
     public static List<Node> build(Map<String, Object> data1, Map<String, Object> data2) {
