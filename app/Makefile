@@ -1,4 +1,4 @@
-.PHONY: build run test report check clean
+.PHONY: build run test report check clean install
 
 build:
 	cd app && ./gradlew clean build
@@ -17,3 +17,8 @@ check:
 
 clean:
 	cd app && ./gradlew clean
+
+install:
+	chmod +x app/gradlew
+	cd app && ./gradlew clean install
+	cd app && ./gradlew clean compileTest
