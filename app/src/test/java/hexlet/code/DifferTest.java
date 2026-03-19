@@ -1,7 +1,6 @@
 package hexlet.code;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -123,16 +122,13 @@ public class DifferTest {
 
     @Test
     public void testDefaultFormat() throws Exception {
-        // Тест для формата "default" - когда формат не указан, используется stylish
         String expectedStylish = readExpected("expected_stylish_simple.txt");
 
-        // Вызов без указания формата
         String actualWithoutFormat = Differ.generate(
                 "src/test/resources/fixtures/testFile1.json",
                 "src/test/resources/fixtures/testFile2.json"
         );
 
-        // Явное указание stylish формата
         String actualStylish = Differ.generate(
                 "src/test/resources/fixtures/testFile1.json",
                 "src/test/resources/fixtures/testFile2.json",
