@@ -1,124 +1,71 @@
 package hexlet.code;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class DifferTest {
 
-    @Test
-    public void testGenerateJson() throws Exception {
-        String expected = "{"
-                + "\n  - follow: false"
-                + "\n    host: hexlet.io"
-                + "\n  - proxy: 123.234.53.22"
-                + "\n  - timeout: 50"
-                + "\n  + timeout: 20"
-                + "\n  + verbose: true"
-                + "\n}";
+    private String readExpected(String filename) throws Exception {
+        Path path = Path.of("src/test/resources/fixtures/" + filename);
+        return Files.readString(path)
+                .replace("\r\n", "\n")
+                .trim();
+    }
 
+    @Test
+    public void testGenerateJsonStylish() throws Exception {
+        String expected = readExpected("expected_stylish_simple.txt");
         String actual = Differ.generate(
                 "src/test/resources/fixtures/testFile1.json",
                 "src/test/resources/fixtures/testFile2.json"
         );
-
         assertEquals(expected, actual);
     }
 
     @Test
-    public void testGenerateYaml() throws Exception {
-        String expected = "{"
-                + "\n  - follow: false"
-                + "\n    host: hexlet.io"
-                + "\n  - proxy: 123.234.53.22"
-                + "\n  - timeout: 50"
-                + "\n  + timeout: 20"
-                + "\n  + verbose: true"
-                + "\n}";
-
+    public void testGenerateYamlStylish() throws Exception {
+        String expected = readExpected("expected_stylish_simple.txt");
         String actual = Differ.generate(
                 "src/test/resources/fixtures/testFile1.yml",
                 "src/test/resources/fixtures/testFile2.yml"
         );
-
         assertEquals(expected, actual);
     }
 
     @Test
-    public void testGenerateAttachJson() throws Exception {
-        String expected = "{"
-                + "\n    chars1: [a, b, c]"
-                + "\n  - chars2: [d, e, f]"
-                + "\n  + chars2: false"
-                + "\n  - checked: false"
-                + "\n  + checked: true"
-                + "\n  - default: null"
-                + "\n  + default: [value1, value2]"
-                + "\n  - id: 45"
-                + "\n  + id: null"
-                + "\n  - key1: value1"
-                + "\n  + key2: value2"
-                + "\n    numbers1: [1, 2, 3, 4]"
-                + "\n  - numbers2: [2, 3, 4, 5]"
-                + "\n  + numbers2: [22, 33, 44, 55]"
-                + "\n  - numbers3: [3, 4, 5]"
-                + "\n  + numbers4: [4, 5, 6]"
-                + "\n  + obj1: {nestedKey=value, isNested=true}"
-                + "\n  - setting1: Some value"
-                + "\n  + setting1: Another value"
-                + "\n  - setting2: 200"
-                + "\n  + setting2: 300"
-                + "\n  - setting3: true"
-                + "\n  + setting3: none"
-                + "\n}";
-
+    public void testGenerateAttachJsonStylish() throws Exception {
+        String expected = readExpected("expected_stylish_attach.txt");
         String actual = Differ.generate(
                 "src/test/resources/fixtures/testFileAttach1.json",
                 "src/test/resources/fixtures/testFileAttach2.json"
         );
-
         assertEquals(expected, actual);
     }
 
     @Test
     public void testGeneratePlain() throws Exception {
-        String expected = "Property 'follow' was removed"
-                + "\nProperty 'proxy' was removed"
-                + "\nProperty 'timeout' was updated. From 50 to 20"
-                + "\nProperty 'verbose' was added with value: true";
-
+        String expected = readExpected("expected_plain_simple.txt");
         String actual = Differ.generate(
                 "src/test/resources/fixtures/testFile1.json",
                 "src/test/resources/fixtures/testFile2.json",
                 "plain"
         );
-
         assertEquals(expected, actual);
     }
 
     @Test
     public void testGenerateAttachPlain() throws Exception {
-        String expected = "Property 'chars2' was updated. From [complex value] to false"
-                + "\nProperty 'checked' was updated. From false to true"
-                + "\nProperty 'default' was updated. From null to [complex value]"
-                + "\nProperty 'id' was updated. From 45 to null"
-                + "\nProperty 'key1' was removed"
-                + "\nProperty 'key2' was added with value: 'value2'"
-                + "\nProperty 'numbers2' was updated. From [complex value] to [complex value]"
-                + "\nProperty 'numbers3' was removed"
-                + "\nProperty 'numbers4' was added with value: [complex value]"
-                + "\nProperty 'obj1' was added with value: [complex value]"
-                + "\nProperty 'setting1' was updated. From 'Some value' to 'Another value'"
-                + "\nProperty 'setting2' was updated. From 200 to 300"
-                + "\nProperty 'setting3' was updated. From true to 'none'";
-
+        String expected = readExpected("expected_plain_attach.txt");
         String actual = Differ.generate(
                 "src/test/resources/fixtures/testFileAttach1.json",
                 "src/test/resources/fixtures/testFileAttach2.json",
                 "plain"
         );
-
         assertEquals(expected, actual);
     }
 
@@ -152,17 +99,12 @@ public class DifferTest {
 
     @Test
     public void testGenerateYamlPlain() throws Exception {
-        String expected = "Property 'follow' was removed"
-                + "\nProperty 'proxy' was removed"
-                + "\nProperty 'timeout' was updated. From 50 to 20"
-                + "\nProperty 'verbose' was added with value: true";
-
+        String expected = readExpected("expected_plain_simple.txt");
         String actual = Differ.generate(
                 "src/test/resources/fixtures/testFile1.yml",
                 "src/test/resources/fixtures/testFile2.yml",
                 "plain"
         );
-
         assertEquals(expected, actual);
     }
 
@@ -177,6 +119,28 @@ public class DifferTest {
         assertTrue(actual != null && !actual.isEmpty());
         assertTrue(actual.contains("follow"));
         assertTrue(actual.contains("timeout"));
+    }
+
+    @Test
+    public void testDefaultFormat() throws Exception {
+        // Тест для формата "default" - когда формат не указан, используется stylish
+        String expectedStylish = readExpected("expected_stylish_simple.txt");
+
+        // Вызов без указания формата
+        String actualWithoutFormat = Differ.generate(
+                "src/test/resources/fixtures/testFile1.json",
+                "src/test/resources/fixtures/testFile2.json"
+        );
+
+        // Явное указание stylish формата
+        String actualStylish = Differ.generate(
+                "src/test/resources/fixtures/testFile1.json",
+                "src/test/resources/fixtures/testFile2.json",
+                "stylish"
+        );
+
+        assertEquals(expectedStylish, actualWithoutFormat);
+        assertEquals(actualStylish, actualWithoutFormat);
     }
 
     @Test

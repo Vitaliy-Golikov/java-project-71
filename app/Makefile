@@ -1,22 +1,22 @@
 .PHONY: build run test report check clean install
 
 build:
-	cd app && ./gradlew clean build
+	./gradlew clean build
 
 run:
-	cd app && ./gradlew run
+	./gradlew run
 
 test:
-	cd app && ./gradlew test
+	./gradlew test
 
 report:
-	cd app && ./gradlew jacocoTestReport
+	./gradlew jacocoTestReport
 
 check:
-	cd app && ./gradlew check
+	./gradlew check
 
 clean:
-	cd app && ./gradlew clean
+	./gradlew clean
 
 install:
 	chmod +x app/gradlew

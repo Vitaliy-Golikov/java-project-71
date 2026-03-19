@@ -33,7 +33,7 @@ public final class StylishFormatter implements Formatter {
                             .append(stringify(node.getNewValue())).append("\n");
                     break;
                 default:
-                    throw new IllegalArgumentException("Unknown status");
+                    throw new IllegalArgumentException("Unknown status: " + node.getStatus());
             }
         }
 

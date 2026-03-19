@@ -4,15 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import java.util.Map;
 
-public class Parse {
+public class Parser {
 
-    public static Map<String, Object> parse(String content, String filePath) throws Exception {
-        if (filePath.endsWith(".json")) {
-            return parseJson(content);
-        } else if (filePath.endsWith(".yml") || filePath.endsWith(".yaml"))  {
-            return parseYaml(content);
-        } else {
-            throw new Exception("Unsupported file format: " + filePath);
+    public static Map<String, Object> parse(String content, Format format) throws Exception {
+        switch (format) {
+            case JSON:
+                return parseJson(content);
+            case YAML:
+                return parseYaml(content);
+            default:
+                throw new Exception("Unsupported format: " + format);
         }
     }
 

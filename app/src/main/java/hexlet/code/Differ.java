@@ -16,12 +16,25 @@ public class Differ {
         String content1 = Files.readString(Paths.get(filepath1));
         String content2 = Files.readString(Paths.get(filepath2));
 
-        Map<String, Object> data1 = Parse.parse(content1, filepath1);
-        Map<String, Object> data2 = Parse.parse(content2, filepath2);
+        Format format1 = detectFormat(filepath1);
+        Format format2 = detectFormat(filepath2);
+
+        Map<String, Object> data1 = Parser.parse(content1, format1);
+        Map<String, Object> data2 = Parser.parse(content2, format2);
 
         List<Node> differences = TreeBuilder.build(data1, data2);
 
         Formatter formatter = FormatterFactory.getFormatter(format);
         return formatter.format(differences);
+    }
+
+    private static Format detectFormat(String filePath) throws Exception {
+        if (filePath.endsWith(".json")) {
+            return Format.JSON;
+        } else if (filePath.endsWith(".yml") || filePath.endsWith(".yaml")) {
+            return Format.YAML;
+        } else {
+            throw new Exception("Unsupported file format: " + filePath);
+        }
     }
 }
