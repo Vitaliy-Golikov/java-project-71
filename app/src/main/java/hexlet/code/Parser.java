@@ -7,6 +7,9 @@ import java.util.Map;
 public class Parser {
 
     public static Map<String, Object> parse(String content, Format format) throws Exception {
+        if (format == null) {
+            throw new Exception("Unable to determine file format. Supported formats: JSON, YAML");
+        }
         switch (format) {
             case JSON:
                 return parseJson(content);

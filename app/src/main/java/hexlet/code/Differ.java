@@ -28,13 +28,13 @@ public class Differ {
         return formatter.format(differences);
     }
 
-    private static Format detectFormat(String filePath) throws Exception {
+    private static Format detectFormat(String filePath) {
         if (filePath.endsWith(".json")) {
             return Format.JSON;
         } else if (filePath.endsWith(".yml") || filePath.endsWith(".yaml")) {
             return Format.YAML;
         } else {
-            throw new Exception("Unsupported file format: " + filePath);
+            return null;
         }
     }
 }
