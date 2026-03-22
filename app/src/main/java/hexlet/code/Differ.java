@@ -16,8 +16,11 @@ public class Differ {
         String content1 = Files.readString(Paths.get(filepath1));
         String content2 = Files.readString(Paths.get(filepath2));
 
-        Format format1 = detectFormat(filepath1);
-        Format format2 = detectFormat(filepath2);
+        String extension1 = getFileExtension(filepath1);
+        String extension2 = getFileExtension(filepath2);
+
+        Format format1 = Parser.getFormatByExtension(extension1);
+        Format format2 = Parser.getFormatByExtension(extension2);
 
         Map<String, Object> data1 = Parser.parse(content1, format1);
         Map<String, Object> data2 = Parser.parse(content2, format2);
@@ -28,13 +31,16 @@ public class Differ {
         return formatter.format(differences);
     }
 
-    private static Format detectFormat(String filePath) {
-        if (filePath.endsWith(".json")) {
-            return Format.JSON;
-        } else if (filePath.endsWith(".yml") || filePath.endsWith(".yaml")) {
-            return Format.YAML;
-        } else {
-            return null;
+    /**
+     * Извлекает расширение файла из пути.
+     * Возвращает строку после последней точки, например "json", "yml", "yaml".
+     * Если у файла нет расширения, возвращает null.
+     */
+    private static String getFileExtension(String filePath) {
+        int lastDotIndex = filePath.lastIndexOf('.');
+        if (lastDotIndex > 0 && lastDotIndex < filePath.length() - 1) {
+            return filePath.substring(lastDotIndex + 1).toLowerCase();
         }
+        return null;
     }
 }

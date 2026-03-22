@@ -20,6 +20,21 @@ public class Parser {
         }
     }
 
+    public static Format getFormatByExtension(String extension) throws Exception {
+        if (extension == null) {
+            throw new Exception("Unable to determine file format: file has no extension");
+        }
+        switch (extension) {
+            case "json":
+                return Format.JSON;
+            case "yml":
+            case "yaml":
+                return Format.YAML;
+            default:
+                throw new Exception("Unsupported file extension: " + extension + ". Supported: json, yml, yaml");
+        }
+    }
+
     private static Map<String, Object> parseJson(String content) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(content, Map.class);
