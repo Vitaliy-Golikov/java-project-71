@@ -31,11 +31,6 @@ public class Differ {
         return formatter.format(differences);
     }
 
-    /**
-     * Извлекает расширение файла из пути.
-     * Возвращает строку после последней точки, например "json", "yml", "yaml".
-     * Если у файла нет расширения, возвращает null.
-     */
     private static String getFileExtension(String filePath) {
         int lastDotIndex = filePath.lastIndexOf('.');
         if (lastDotIndex > 0 && lastDotIndex < filePath.length() - 1) {
